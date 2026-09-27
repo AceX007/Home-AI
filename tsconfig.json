@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["apps/renderer/src/*"],
+      "@homeai/core": ["packages/core/src/index.ts"],
+      "@homeai/governor": ["packages/governor/src/index.ts"],
+      "@homeai/llm": ["packages/llm/src/index.ts"],
+      "@homeai/agent": ["packages/agent/src/index.ts"],
+      "@homeai/rag": ["packages/rag/src/index.ts"],
+      "@homeai/mods": ["packages/mods/src/index.ts"],
+      "@homeai/runtime/browser": ["packages/runtime/src/browser.d.ts"],
+      "@homeai/runtime": ["packages/runtime/src/index.ts"],
+      "@homeai/ts-intel": ["packages/ts-intel/src/index.d.ts"],
+      "@homeai/debug": ["packages/debug/src/index.d.ts"],
+      "@homeai/subagent": ["packages/subagent/src/index.ts"]
+    }
+  },
+  "include": [
+    "apps/**/*",
+    "packages/**/*",
+    "electron.vite.config.ts"
+  ]
+}

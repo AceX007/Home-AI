@@ -1,0 +1,31 @@
+{
+  "id": "default",
+  "title": "Workbench",
+  "columns": [
+    {
+      "id": "backlog",
+      "title": "Backlog"
+    },
+    {
+      "id": "doing",
+      "title": "Doing"
+    },
+    {
+      "id": "review",
+      "title": "Review"
+    },
+    {
+      "id": "done",
+      "title": "Done"
+    }
+  ],
+  "cards": [
+    {
+      "id": "welcome",
+      "title": "Index RAG and load the 2B",
+      "body": "Open Chat, run doctor, then ask the local model to search memory.",
+      "column": "backlog",
+      "createdAt": 1787875913054
+    }
+  ]
+}

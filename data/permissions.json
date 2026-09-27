@@ -1,0 +1,32 @@
+{
+  "approvalMode": "allowlist",
+  "terminalAllowlist": [
+    "git status",
+    "git diff",
+    "git log",
+    "git branch",
+    "git show",
+    "git rev-parse",
+    "git worktree list",
+    "npm test",
+    "npm run",
+    "npx tsc",
+    "npx vitest",
+    "pytest",
+    "ls",
+    "pwd",
+    "rg ",
+    "grep ",
+    "cat ",
+    "head ",
+    "wc "
+  ],
+  "mcpAllowlist": [],
+  "netAllowlist": [
+    "http://127.0.0.1",
+    "http://localhost",
+    "https://127.0.0.1",
+    "https://localhost",
+    "https://html.duckduckgo.com"
+  ]
+}

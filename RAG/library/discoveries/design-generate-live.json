@@ -1,0 +1,69 @@
+{
+  "at": "2026-09-01T00:05:40.154Z",
+  "slug": "prove-pitch",
+  "rows": [
+    {
+      "mind": "local",
+      "irGrew": true,
+      "pages": 6,
+      "nodes": 17,
+      "tools": [
+        "design_get",
+        "design_patch"
+      ],
+      "revision": "rev_2",
+      "lastErr": "",
+      "lastPatch": [
+        {
+          "op": "keys",
+          "path": "patch,id"
+        },
+        {
+          "op": "add",
+          "path": "/pages/-"
+        },
+        {
+          "op": "add",
+          "path": "/nodes/p3.root"
+        },
+        {
+          "op": "add",
+          "path": "/nodes/p3.title"
+        },
+        {
+          "op": "add",
+          "path": "/nodes/p3.body"
+        },
+        {
+          "op": "add",
+          "path": "/pages/-"
+        },
+        {
+          "op": "add",
+          "path": "/nodes/p4.root"
+        },
+        {
+          "op": "add",
+          "path": "/nodes/p4.title"
+        },
+        {
+          "op": "add",
+          "path": "/nodes/p4.body"
+        }
+      ],
+      "lastRaw": ""
+    },
+    {
+      "mind": "openai",
+      "irGrew": false,
+      "error": "openai key missing",
+      "remint": "local"
+    },
+    {
+      "mind": "openrouter",
+      "irGrew": false,
+      "error": "openrouter key missing",
+      "remint": "local"
+    }
+  ]
+}

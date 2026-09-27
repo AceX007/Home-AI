@@ -1,0 +1,52 @@
+{
+  "name": "home-ai-workbench",
+  "productName": "Hex AI Workbench",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal AI workplace — Hex AI, local 2B GGUF, RAG, tools, mods",
+  "author": "Hex AI",
+  "type": "module",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "ELECTRON_DISABLE_SANDBOX=1 electron-vite dev",
+    "ide": "electron-vite build && electron .",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "start": "npm run build && electron-vite preview",
+    "telegram": "HOMEAI_HEADLESS=1 electron-vite dev",
+    "pack": "electron-vite build && electron-builder --linux AppImage deb",
+    "release": "electron-vite build && electron-builder --linux --win --mac",
+    "smoke": "electron-vite build && node scripts/electron-smoke.mjs",
+    "vendor:llama": "bash vendor/fetch-llama-server.sh",
+    "vendor:llama:win": "HEX_LLAMA_ASSET=win-cpu-x64 bash vendor/fetch-llama-server.sh",
+    "vendor:llama:mac": "HEX_LLAMA_ASSET=macos-arm64 bash vendor/fetch-llama-server.sh",
+    "test": "node --test packages/runtime/src/paths.test.mjs packages/runtime/src/policy.test.mjs packages/runtime/src/auto-review.test.mjs packages/runtime/src/mcp-http.test.mjs packages/runtime/src/mcp-packs.test.mjs packages/runtime/src/resource-harvest.test.mjs packages/runtime/src/compiler-os.test.mjs packages/ts-intel/src/index.test.mjs packages/debug/src/index.test.mjs packages/runtime/src/designir.test.mjs packages/runtime/src/design-style.test.mjs packages/runtime/src/design-draft.test.mjs packages/runtime/src/design-export.test.mjs packages/runtime/src/design-path.test.mjs packages/runtime/src/design-generate.test.mjs packages/runtime/src/dtcg.test.mjs packages/runtime/src/cursor-jobs.test.mjs packages/runtime/src/think.test.mjs packages/runtime/src/activity.test.mjs packages/runtime/src/git-safe.test.mjs packages/runtime/src/conversations.test.mjs packages/runtime/src/profile.test.mjs packages/runtime/src/knowledge-write.test.mjs packages/runtime/src/telegram-auth.test.mjs packages/runtime/src/telegram-progress.test.mjs packages/runtime/src/telegram-api.test.mjs packages/runtime/src/telegram-router.test.mjs packages/runtime/src/tool-surface.test.mjs packages/runtime/src/telegram-chrome.test.mjs packages/runtime/src/telegram-initdata.test.mjs packages/runtime/src/miniapp-hub.test.mjs packages/runtime/src/inbox.test.mjs packages/runtime/src/mind.test.mjs packages/runtime/src/telegram-session.test.mjs packages/runtime/src/workbench-chrome.test.mjs packages/runtime/src/stage-chrome.test.mjs packages/runtime/src/search-proof.test.mjs packages/runtime/src/front-matter.test.mjs packages/runtime/src/spawn-workers.test.mjs packages/runtime/src/subagent.test.mjs packages/runtime/src/compute.test.mjs packages/runtime/src/life-files.test.mjs packages/runtime/src/voice.test.mjs packages/governor/src/coder-args.test.mjs packages/llm/src/sidecar-own.test.mjs packages/runtime/src/fleet.test.mjs packages/runtime/src/electron-dev-boot.test.mjs packages/runtime/src/pane-route.test.mjs packages/runtime/src/hex-chrome.test.mjs packages/runtime/src/app-roots.test.mjs packages/runtime/src/pack-chrome.test.mjs packages/runtime/src/electron-pack.test.mjs",
+    "postinstall": "electron-builder install-app-deps || true"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/addon-web-links": "^0.11.0",
+    "@xterm/xterm": "^5.5.0",
+    "better-sqlite3": "^11.10.0",
+    "chokidar": "^4.0.3",
+    "electron-updater": "^6.8.9",
+    "lucide-react": "^0.511.0",
+    "monaco-editor": "^0.52.2",
+    "node-pty": "^1.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react": "^4.5.0",
+    "electron": "^35.2.1",
+    "electron-builder": "^26.0.12",
+    "electron-vite": "^3.1.0",
+    "vite": "^6.3.5"
+  }
+}

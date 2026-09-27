@@ -1,0 +1,182 @@
+{
+  "schema": "designir/0.1",
+  "revision": "rev_2",
+  "artifact": {
+    "id": "prove-pitch",
+    "profile": "slides",
+    "name": "Pitch"
+  },
+  "brief": {
+    "goal": "Make a pitch deck for a new product",
+    "audience": "operator"
+  },
+  "tokens": {
+    "spaceScale": 1,
+    "colorBg": "#1e1e1e",
+    "colorFg": "#cccccc",
+    "colorMuted": "#8a8a8a",
+    "colorAccent": "#89d185",
+    "colorCard": "#252526",
+    "radius": 6
+  },
+  "pages": [
+    {
+      "id": "p1",
+      "name": "Screen 1"
+    },
+    {
+      "id": "p2",
+      "name": "Screen 2"
+    },
+    {
+      "id": "p3",
+      "name": "Product Showcase"
+    },
+    {
+      "id": "p4",
+      "name": "Testimonials"
+    },
+    {
+      "id": "p5",
+      "name": "FAQ"
+    },
+    {
+      "id": "p6",
+      "name": "Contact"
+    }
+  ],
+  "nodes": {
+    "p1.root": {
+      "type": "frame",
+      "tag": "div",
+      "page": "p1",
+      "order": 0,
+      "text": "Pitch"
+    },
+    "p1.title": {
+      "type": "text",
+      "tag": "h1",
+      "page": "p1",
+      "parent": "p1.root",
+      "order": 1,
+      "text": "Pitch"
+    },
+    "p1.body": {
+      "type": "text",
+      "tag": "p",
+      "page": "p1",
+      "parent": "p1.root",
+      "order": 2,
+      "text": "Make a pitch deck for a new product"
+    },
+    "p2.root": {
+      "type": "frame",
+      "tag": "div",
+      "page": "p2",
+      "order": 0,
+      "text": "Next"
+    },
+    "p2.title": {
+      "type": "text",
+      "tag": "h1",
+      "page": "p2",
+      "parent": "p2.root",
+      "order": 1,
+      "text": "Screen 2"
+    },
+    "p3.root": {
+      "type": "frame",
+      "text": "Product Showcase",
+      "order": 0,
+      "tag": "div",
+      "page": "p3"
+    },
+    "p3.title": {
+      "type": "text",
+      "text": "Our Product",
+      "order": 1,
+      "parent": "p3.root",
+      "tag": "h1",
+      "page": "p3"
+    },
+    "p3.body": {
+      "type": "text",
+      "text": "High-quality streetwear sneakers designed for urban life",
+      "order": 2,
+      "parent": "p3.root",
+      "tag": "p",
+      "page": "p3"
+    },
+    "p4.root": {
+      "type": "frame",
+      "text": "Testimonials",
+      "order": 0,
+      "tag": "div",
+      "page": "p4"
+    },
+    "p4.title": {
+      "type": "text",
+      "text": "What People Say",
+      "order": 1,
+      "parent": "p4.root",
+      "tag": "h1",
+      "page": "p4"
+    },
+    "p4.body": {
+      "type": "text",
+      "text": "Trusted by thousands of satisfied customers",
+      "order": 2,
+      "parent": "p4.root",
+      "tag": "p",
+      "page": "p4"
+    },
+    "p5.root": {
+      "type": "frame",
+      "text": "FAQ",
+      "order": 0,
+      "tag": "div",
+      "page": "p5"
+    },
+    "p5.title": {
+      "type": "text",
+      "text": "Frequently Asked Questions",
+      "order": 1,
+      "parent": "p5.root",
+      "tag": "h1",
+      "page": "p5"
+    },
+    "p5.body": {
+      "type": "text",
+      "text": "Common questions about our product",
+      "order": 2,
+      "parent": "p5.root",
+      "tag": "p",
+      "page": "p5"
+    },
+    "p6.root": {
+      "type": "frame",
+      "text": "Contact",
+      "order": 0,
+      "tag": "div",
+      "page": "p6"
+    },
+    "p6.title": {
+      "type": "text",
+      "text": "Contact Us",
+      "order": 1,
+      "parent": "p6.root",
+      "tag": "h1",
+      "page": "p6"
+    },
+    "p6.body": {
+      "type": "text",
+      "text": "Email us at support@example.com",
+      "order": 2,
+      "parent": "p6.root",
+      "tag": "p",
+      "page": "p6"
+    }
+  },
+  "locks": {},
+  "comments": {}
+}

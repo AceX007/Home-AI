@@ -1,0 +1,378 @@
+{
+  "schema": "designir/0.1",
+  "revision": "rev_1",
+  "artifact": {
+    "id": "quokka-shop-storefront",
+    "profile": "ui.mobile",
+    "name": "Mobile dApp storefront design"
+  },
+  "brief": {
+    "goal": "Streetwear storefront: geo picker, catalog, cart, checkout",
+    "audience": "mobile shopper"
+  },
+  "pages": [
+    { "id": "landing", "name": "Quakka Shop Storefront" },
+    { "id": "store", "name": "Store" },
+    { "id": "product", "name": "Product" },
+    { "id": "orders", "name": "Orders" },
+    { "id": "profile", "name": "Profile" }
+  ],
+  "tokens": {
+    "spaceScale": 1,
+    "colorBg": "#000000",
+    "colorFg": "#f0f1f5",
+    "colorMuted": "#8a8a8a",
+    "colorAccent": "#32d74b",
+    "colorCard": "#1a1a1a",
+    "radius": 12
+  },
+  "nodes": {
+    "phone.frame": {
+      "type": "frame",
+      "tag": "div",
+      "tid": 1,
+      "order": 0,
+      "text": "phone",
+      "layout": { "widthMode": "fixed", "heightMode": "fixed", "width": 334, "height": 748 }
+    },
+    "cond.geo": {
+      "type": "conditional",
+      "tag": "sc-if",
+      "parent": "phone.frame",
+      "tid": 10,
+      "order": 1,
+      "visible": false,
+      "text": "Conditional group"
+    },
+    "cond.cart": {
+      "type": "conditional",
+      "tag": "uc-if",
+      "parent": "phone.frame",
+      "tid": 11,
+      "order": 2,
+      "visible": false,
+      "text": "Conditional group"
+    },
+    "cond.pay": {
+      "type": "conditional",
+      "tag": "nz-if",
+      "parent": "phone.frame",
+      "tid": 12,
+      "order": 3,
+      "visible": false,
+      "text": "Conditional group"
+    },
+    "landing.col": {
+      "type": "frame",
+      "tag": "div",
+      "parent": "phone.frame",
+      "page": "landing",
+      "tid": 48,
+      "order": 10,
+      "text": "Column",
+      "attrs": { "class": "mcs" },
+      "style": {
+        "height": "748px",
+        "display": "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        "justify-content": "space-between",
+        "padding": "0px 28px",
+        "flex": "1",
+        "overflow-x": "hidden",
+        "overflow-y": "auto",
+        "scrollbar-width": "none"
+      },
+      "layout": {
+        "widthMode": "fixed",
+        "heightMode": "fixed",
+        "width": 334,
+        "height": 748,
+        "position": "inline",
+        "padMode": "xy",
+        "padV": 0,
+        "padH": 28
+      }
+    },
+    "landing.hero": {
+      "type": "group",
+      "tag": "div",
+      "parent": "landing.col",
+      "page": "landing",
+      "tid": 49,
+      "order": 11,
+      "text": "group",
+      "style": {
+        "display": "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        "justify-content": "center",
+        "gap": "22px",
+        "flex": "1"
+      }
+    },
+    "landing.logo": {
+      "type": "text",
+      "tag": "div",
+      "parent": "landing.hero",
+      "page": "landing",
+      "tid": 50,
+      "order": 12,
+      "role": "logo",
+      "text": "Q"
+    },
+    "landing.title": {
+      "type": "text",
+      "tag": "h1",
+      "parent": "landing.hero",
+      "page": "landing",
+      "tid": 51,
+      "order": 13,
+      "role": "title",
+      "text": "Quakka Shop"
+    },
+    "landing.sub": {
+      "type": "text",
+      "tag": "p",
+      "parent": "landing.hero",
+      "page": "landing",
+      "tid": 52,
+      "order": 14,
+      "role": "body",
+      "text": "Your underground marketplace"
+    },
+    "landing.live": {
+      "type": "text",
+      "tag": "span",
+      "parent": "landing.hero",
+      "page": "landing",
+      "tid": 53,
+      "order": 15,
+      "role": "kicker",
+      "text": "LIVE · 24/7"
+    },
+    "landing.actions": {
+      "type": "group",
+      "tag": "div",
+      "parent": "landing.col",
+      "page": "landing",
+      "tid": 54,
+      "order": 16,
+      "text": "group",
+      "style": {
+        "display": "flex",
+        "flex-direction": "column",
+        "gap": "10px",
+        "width": "100%"
+      }
+    },
+    "landing.tg": {
+      "type": "button",
+      "tag": "button",
+      "parent": "landing.actions",
+      "page": "landing",
+      "tid": 55,
+      "order": 17,
+      "text": "Continue with Telegram"
+    },
+    "landing.ru": {
+      "type": "button",
+      "tag": "button",
+      "parent": "landing.actions",
+      "page": "landing",
+      "tid": 56,
+      "order": 18,
+      "text": "Switch to Russian"
+    },
+    "store.header": {
+      "type": "group",
+      "tag": "div",
+      "parent": "phone.frame",
+      "page": "store",
+      "tid": 60,
+      "order": 20,
+      "text": "Row"
+    },
+    "store.brand": {
+      "type": "text",
+      "parent": "store.header",
+      "page": "store",
+      "tid": 61,
+      "order": 21,
+      "role": "title",
+      "text": "QUOKKA SHOP"
+    },
+    "store.search": {
+      "type": "text",
+      "parent": "phone.frame",
+      "page": "store",
+      "tid": 62,
+      "order": 22,
+      "text": "Search products..."
+    },
+    "store.chips": {
+      "type": "group",
+      "parent": "phone.frame",
+      "page": "store",
+      "tid": 63,
+      "order": 23,
+      "text": "Row"
+    },
+    "prod.hero": {
+      "type": "frame",
+      "parent": "phone.frame",
+      "page": "product",
+      "tid": 70,
+      "order": 30,
+      "text": "Column"
+    },
+    "prod.title": {
+      "type": "text",
+      "parent": "prod.hero",
+      "page": "product",
+      "tid": 71,
+      "order": 31,
+      "role": "title",
+      "text": "Nike Air Max 90"
+    },
+    "prod.price": {
+      "type": "text",
+      "parent": "prod.hero",
+      "page": "product",
+      "tid": 72,
+      "order": 32,
+      "text": "€180"
+    },
+    "prod.desc": {
+      "type": "text",
+      "parent": "prod.hero",
+      "page": "product",
+      "tid": 73,
+      "order": 33,
+      "role": "body",
+      "text": "Classic runner with visible Air cushioning. German-sourced. Ships within 2h of order confirmation."
+    },
+    "prod.add": {
+      "type": "button",
+      "tag": "button",
+      "parent": "prod.hero",
+      "page": "product",
+      "tid": 74,
+      "order": 34,
+      "text": "Add to Cart"
+    },
+    "prod.buy": {
+      "type": "button",
+      "tag": "button",
+      "parent": "prod.hero",
+      "page": "product",
+      "tid": 75,
+      "order": 35,
+      "text": "Buy Now"
+    },
+    "store.lang": {
+      "type": "button",
+      "tag": "button",
+      "parent": "store.header",
+      "page": "store",
+      "tid": 64,
+      "order": 24,
+      "text": "RU"
+    },
+    "store.bag": {
+      "type": "button",
+      "tag": "button",
+      "parent": "store.header",
+      "page": "store",
+      "tid": 65,
+      "order": 25,
+      "text": "Bag"
+    },
+    "store.grid": {
+      "type": "group",
+      "tag": "div",
+      "parent": "phone.frame",
+      "page": "store",
+      "tid": 66,
+      "order": 26,
+      "text": "Catalog"
+    },
+    "orders.col": {
+      "type": "frame",
+      "tag": "div",
+      "parent": "phone.frame",
+      "page": "orders",
+      "tid": 80,
+      "order": 40,
+      "text": "Column"
+    },
+    "orders.title": {
+      "type": "text",
+      "tag": "h2",
+      "parent": "orders.col",
+      "page": "orders",
+      "tid": 81,
+      "order": 41,
+      "role": "title",
+      "text": "Orders"
+    },
+    "orders.empty": {
+      "type": "text",
+      "tag": "p",
+      "parent": "orders.col",
+      "page": "orders",
+      "tid": 82,
+      "order": 42,
+      "role": "body",
+      "text": "No orders yet"
+    },
+    "orders.row": {
+      "type": "group",
+      "tag": "div",
+      "parent": "orders.col",
+      "page": "orders",
+      "tid": 83,
+      "order": 43,
+      "text": "Last order"
+    },
+    "profile.col": {
+      "type": "frame",
+      "tag": "div",
+      "parent": "phone.frame",
+      "page": "profile",
+      "tid": 90,
+      "order": 50,
+      "text": "Column"
+    },
+    "profile.title": {
+      "type": "text",
+      "tag": "h2",
+      "parent": "profile.col",
+      "page": "profile",
+      "tid": 91,
+      "order": 51,
+      "role": "title",
+      "text": "Profile"
+    },
+    "profile.guest": {
+      "type": "text",
+      "tag": "p",
+      "parent": "profile.col",
+      "page": "profile",
+      "tid": 92,
+      "order": 52,
+      "text": "Guest"
+    },
+    "profile.shop": {
+      "type": "text",
+      "tag": "p",
+      "parent": "profile.col",
+      "page": "profile",
+      "tid": 93,
+      "order": 53,
+      "text": "Quokka Shop"
+    }
+  },
+  "locks": {},
+  "comments": {}
+}

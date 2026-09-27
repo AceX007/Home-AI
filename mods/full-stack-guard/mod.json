@@ -1,0 +1,9 @@
+{
+  "id": "full-stack-guard",
+  "name": "Full-stack hunt + prevent",
+  "version": "1.0.0",
+  "enabled": true,
+  "description": "Whitebox hunt+prevent plus curious recipe refinement. Mines past bugs, fingerprints the stack, ports patterns across systems, always ships prevention and a refined recipe. Portable to any model.",
+  "permissions": ["read", "write", "exec"],
+  "contributes": { "skills": true, "rules": true, "tools": false }
+}

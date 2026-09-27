@@ -1,0 +1,8 @@
+node_modules/
+out/
+dist/
+vendor/
+data/
+*.gguf
+cursor_*.amd64/
+cursor_*.deb

@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "codebase-memory": {
+      "command": "node",
+      "args": ["AI Resources/codebase-memory-mcp-main/dist/index.js"]
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@1.8.0"]
+    },
+    "blender": {
+      "command": "uv",
+      "args": ["--directory", "AI Resources/blender-mcp-main", "run", "blender-mcp"]
+    }
+  }
+}

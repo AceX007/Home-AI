@@ -1,0 +1,9 @@
+{
+  "id": "kernel",
+  "name": "Kernel v2",
+  "version": "2.0.0",
+  "enabled": true,
+  "description": "The workbench operating system: gather, route, surgical tools, verify, remember. Same discipline as a shipping coding agent, tuned for a local 2B.",
+  "permissions": ["read", "write", "net", "exec"],
+  "contributes": { "skills": true, "rules": true, "tools": false }
+}

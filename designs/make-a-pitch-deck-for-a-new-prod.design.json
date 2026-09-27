@@ -1,0 +1,136 @@
+{
+  "schema": "designir/0.1",
+  "revision": "rev_3",
+  "artifact": {
+    "id": "make-a-pitch-deck-for-a-new-prod",
+    "profile": "ui.web",
+    "name": "Make a pitch deck for a new product"
+  },
+  "brief": {
+    "goal": "Make a pitch deck for a new product",
+    "audience": "operator"
+  },
+  "tokens": {
+    "spaceScale": 1,
+    "colorBg": "#1e1e1e",
+    "colorFg": "#cccccc",
+    "colorMuted": "#8a8a8a",
+    "colorAccent": "#89d185",
+    "colorCard": "#252526",
+    "radius": 6
+  },
+  "pages": [
+    {
+      "id": "p1",
+      "name": "Screen 1"
+    },
+    {
+      "id": "p2",
+      "name": "Screen 2"
+    },
+    {
+      "id": "p3",
+      "name": "Executive Summary"
+    },
+    {
+      "id": "p4",
+      "name": "Problem Statement"
+    },
+    {
+      "id": "p5",
+      "name": "Solution Overview"
+    },
+    {
+      "id": "p6",
+      "name": "Market Opportunity"
+    },
+    {
+      "id": "p7",
+      "name": "Product Features"
+    },
+    {
+      "id": "p8",
+      "name": "Business Case"
+    },
+    {
+      "id": "p9",
+      "name": "Team & Approach"
+    },
+    {
+      "id": "p10",
+      "name": "Timeline & Roadmap"
+    },
+    {
+      "id": "p11",
+      "name": "Financials"
+    },
+    {
+      "id": "p12",
+      "name": "Call to Action"
+    },
+    {
+      "id": "p13",
+      "name": "Appendix"
+    },
+    {
+      "id": "p14",
+      "name": "Q&A"
+    },
+    {
+      "id": "p15",
+      "name": "Contact"
+    },
+    {
+      "id": "p16",
+      "name": "Thank You"
+    }
+  ],
+  "nodes": {
+    "p1.root": {
+      "type": "frame",
+      "text": "Make a pitch deck for a new product",
+      "order": 0,
+      "tag": "div",
+      "page": "p1"
+    },
+    "p1.title": {
+      "type": "text",
+      "text": "Make a pitch deck for a new product",
+      "order": 1,
+      "parent": "p1.root",
+      "tag": "h1",
+      "page": "p1"
+    },
+    "p1.body": {
+      "type": "text",
+      "text": "Make a pitch deck for a new product",
+      "order": 2,
+      "parent": "p1.root",
+      "tag": "p",
+      "page": "p1"
+    },
+    "p2.root": {
+      "type": "frame",
+      "text": "Next",
+      "order": 0,
+      "tag": "div",
+      "page": "p2"
+    },
+    "p2.title": {
+      "type": "text",
+      "text": "Screen 2",
+      "order": 1,
+      "parent": "p2.root",
+      "tag": "h1",
+      "page": "p2"
+    }
+  },
+  "locks": {},
+  "comments": {},
+  "tokenSources": [
+    {
+      "path": "designs/tokens.json",
+      "format": "dtcg-2025.10"
+    }
+  ]
+}
