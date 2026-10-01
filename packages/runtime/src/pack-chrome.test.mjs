@@ -28,6 +28,7 @@ import {
   takeUpdateFeed,
   takeUpdateProvider,
   takeChromeSandboxSkip,
+  takeInstallPlan,
   chromeSandboxSuid,
   assertGgufSize
 } from './pack-chrome.mjs'
@@ -147,5 +148,29 @@ describe('pack chrome jail — T-107', () => {
     assert.match(smoke, /takeChromeSandboxSkip/)
     assert.match(smoke, /do not disable sandbox on ide/)
     assert.equal(smoke.includes('ELECTRON_DISABLE_SANDBOX=1'), false)
+  })
+
+  it('fresh clone gets a run command and never disables sandbox on ide — T-134', () => {
+    const ready = { nodeMajor: 22, electron: true, nativeOk: true, llama: true }
+    const linuxDev = takeInstallPlan({ ...ready, platform: 'linux', sandboxSuid: false })
+    assert.equal(linuxDev.ok, true)
+    assert.equal(linuxDev.command, 'npm run dev')
+    assert.equal(linuxDev.command.includes('ELECTRON_DISABLE_SANDBOX'), false)
+    const linuxIde = takeInstallPlan({ ...ready, platform: 'linux', sandboxSuid: true })
+    assert.equal(linuxIde.command, 'npm run ide')
+    const win = takeInstallPlan({ ...ready, platform: 'win32', sandboxSuid: false })
+    assert.equal(win.command, 'npm run ide')
+    const old = takeInstallPlan({ ...ready, nodeMajor: 18, platform: 'linux', sandboxSuid: true })
+    assert.equal(old.ok, false)
+    assert.equal(old.command, '')
+    const doctor = readFileSync(join(repo, 'scripts/doctor.mjs'), 'utf8')
+    const readme = readFileSync(join(repo, 'README.md'), 'utf8')
+    const pkg = JSON.parse(readFileSync(join(repo, 'package.json'), 'utf8'))
+    assert.match(doctor, /takeInstallPlan/)
+    assert.equal(doctor.includes('ELECTRON_DISABLE_SANDBOX'), false)
+    assert.match(readme, /npm run doctor/)
+    assert.match(readme, /npm run dev/)
+    assert.equal(pkg.engines.node, '>=22')
+    assert.equal(String(pkg.scripts.ide).includes('ELECTRON_DISABLE_SANDBOX'), false)
   })
 })

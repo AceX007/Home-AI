@@ -6,6 +6,9 @@
   "description": "Personal AI workplace — Hex AI, local 2B GGUF, RAG, tools, mods",
   "author": "Hex AI",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "out/main/index.js",
   "scripts": {
     "dev": "ELECTRON_DISABLE_SANDBOX=1 electron-vite dev",
@@ -17,6 +20,7 @@
     "pack": "electron-vite build && electron-builder --linux AppImage deb",
     "release": "electron-vite build && electron-builder --linux --win --mac",
     "smoke": "electron-vite build && node scripts/electron-smoke.mjs",
+    "doctor": "node scripts/doctor.mjs",
     "vendor:llama": "bash vendor/fetch-llama-server.sh",
     "vendor:llama:win": "HEX_LLAMA_ASSET=win-cpu-x64 bash vendor/fetch-llama-server.sh",
     "vendor:llama:mac": "HEX_LLAMA_ASSET=macos-arm64 bash vendor/fetch-llama-server.sh",

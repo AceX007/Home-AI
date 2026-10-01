@@ -143,3 +143,4 @@ Edge-to-edge cases. Status: `tracked` | `tested` (has a prevent artifact / test)
 | E-137 | Inspector evaluate retries without `throwOnSideEffect` | node-inspect | tested |
 | E-138 | File TS IPC blocks Electron main, or smoke fails hard on non-SUID chrome-sandbox | ts-intel | tested |
 | E-139 | Bottom tabs, status, sidebar lists, or composer clip; page grid auto-places HxPage into a 0px track | workbench-chrome | tested |
+| E-140 | Fresh Linux clone is told to run sandboxed `ide` when chrome-sandbox is not setuid | consumer-pack | tested |

@@ -1128,4 +1128,12 @@ Seed records below are day-one coverage. Agents add `AP-YYYYMMDD-N` after hunts.
 - Regression: T-133 `packages/runtime/src/hex-chrome.test.mjs`
 - Source: workbench UX polish 2026-09-07
 
+### AP-20261001-1 — Fresh clone must name the command that actually opens the window
+- Root cause: README told every machine to run `npm run ide`. On Linux the Chromium sandbox helper is often not setuid, so that command never shows a window, and putting `ELECTRON_DISABLE_SANDBOX` on `ide` would break the sandbox rule.
+- Bad shape: one install line `npm run ide` for all platforms; `ide` script sets `ELECTRON_DISABLE_SANDBOX`.
+- Good shape: `takeInstallPlan` — Node 22, native modules, Electron; Linux without setuid uses `npm run dev`; otherwise `npm run ide`. GGUF stays a Settings download. `npm run doctor` prints that plan.
+- Grep / symbols: `takeInstallPlan`, `npm run doctor`, `scripts/doctor.mjs`
+- Regression: T-134 `packages/runtime/src/pack-chrome.test.mjs`
+- Source: install path 2026-10-01
+
 

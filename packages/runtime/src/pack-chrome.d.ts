@@ -48,3 +48,11 @@ export function takeChromeSandboxSkip(
   env?: { ELECTRON_DISABLE_SANDBOX?: string }
 ): string
 export function chromeSandboxPath(root: unknown): string
+export function takeInstallPlan(raw?: {
+  nodeMajor?: number
+  platform?: string
+  sandboxSuid?: boolean
+  electron?: boolean
+  llama?: boolean
+  nativeOk?: boolean
+}): { ok: boolean; command: string; blockers: string[]; steps: string[] }

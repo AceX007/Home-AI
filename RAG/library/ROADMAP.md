@@ -68,6 +68,7 @@ Last analyzed: 2026-09-04. Upgrade checkboxes when a ship lands. Do not write no
 - [ ] Recreate original apps from recipes + library (not verbatim clones)
 
 ## Next
+- Install (2026-10-01): `npm install`, `npm run vendor:llama`, `npm run doctor`, then the printed command. GGUF is Settings → Hardware. `ide` stays sandboxed.
 - Workbench UX polish (2026-09-07): overflow-x on Checks/Runtime tabs, status ellipsis, sidebar `min-height: 0`, composer `flex-shrink: 0`, hide duplicate pane-tab on list/page/Browser. Operator `npm run ide` click-walk of activity icons + F9 / Checks / Runtime still required. Do not mark click-walk done headless.
 - High-end TS IDE (2026-09-06): file TS IPC on the worker, Inspector evaluate keeps `throwOnSideEffect`, smoke skips non-SUID chrome-sandbox. Full LSP/DAP claims stay off. Operator `npm run ide` click-walk of F9 / Checks / Runtime still required. Mobile DNA remains deferred.
 - CapabilityIR desktop (2026-09-05): generated Electron shell is preload-safe and manually launchable. Next: a mobile-safe manifest/offline bundle; desktop packaging and operator click-walk remain open.

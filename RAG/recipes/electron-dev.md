@@ -28,13 +28,14 @@ status: tried
 - Chokidar on `AI Resources` / `RAG` hits inotify EMFILE; Electron dies after spawn (AP-20260904-86).
 - Runtime `rag.watch` on `mods` + RAG is a second inotify client; on this desktop `max_user_instances` is already full, so watch must `error` → close (AP-20260904-88). Ingest at boot still covers mods.
 - Prefixing sandbox-disable env on the shell is a Trust decision; only `npm run dev` may set it. `ide` / `preview` / `telegram` / pack must keep Chromium sandbox (AP-20260904-100).
+- A fresh clone told only `npm run ide` never opens on Linux when `chrome-sandbox` is not setuid (AP-20261001-1). `takeInstallPlan` / `npm run doctor` names `npm run dev` in that case.
 - ESM `out/preload/index.mjs` under `sandbox: true` never attaches `window.homeai` (AP-20260905-2). Preload must be CJS `index.js`.
 - Renderer panes must not import `auto-review.mjs` / `mcp-packs.mjs` / `@homeai/runtime` (those load `node:path`). Display helpers live in `auto-review-line.mjs` and `mcp-domain.mjs` (AP-20260904-87).
 - Renderer must not value-import `@homeai/ts-intel` (AP-20260905-22).
 - Renderer must not value-import `@homeai/debug` (AP-20260905-23).
 
 ## Prevent / robust delivery
-- Tests: T-96 T-112 T-125 T-127 T-129 `packages/runtime/src/electron-dev-boot.test.mjs`
+- Tests: T-96 T-112 T-125 T-127 T-129 `packages/runtime/src/electron-dev-boot.test.mjs`; T-134 `pack-chrome.test.mjs`
 - Deny-by-default: watch ignore list; renderer port 5175
 - Hunt layers: ipc (preload path is compile-time, not renderer input)
 
@@ -48,3 +49,4 @@ status: tried
 - 2026-09-05 — Inspector. Worked: renderer alias `@homeai/debug` → denied stub. Next: still no Node barrels in Chromium.
 - 2026-09-05 — TS worker file. Worked: `copy-ts-intel-worker` writes `out/main/ts-intel/` so `worker_threads` can load after the main bundle. Next: still `npm run ide` when inotify is capped.
 - 2026-09-06 — File TS IPC on the worker. Worked: `callIsolated` from main handlers. Next: still `npm run ide` when inotify is capped.
+- 2026-10-01 — Install path. Worked: `takeInstallPlan` + `npm run doctor`; README says Node 22, `vendor:llama`, then `dev` or `ide`. Failed if we had put `ELECTRON_DISABLE_SANDBOX` on `ide`. Next: a stranger still downloads the GGUF from Settings. AP-20261001-1.

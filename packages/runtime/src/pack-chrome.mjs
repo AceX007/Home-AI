@@ -248,6 +248,33 @@ export function takeChromeSandboxSkip(info, env = {}) {
   return ''
 }
 
+/** What a fresh clone should run. Never recommends disabling the sandbox on ide. */
+export function takeInstallPlan(raw = {}) {
+  const o = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {}
+  const nodeMajor = Number(o.nodeMajor)
+  const platform = String(o.platform || '')
+  const blockers = []
+  const steps = []
+  if (!Number.isFinite(nodeMajor) || nodeMajor < 22) blockers.push('Node.js 22 or newer is required')
+  if (!o.nativeOk) blockers.push('native modules did not build (better-sqlite3, node-pty)')
+  if (!o.electron) blockers.push('Electron is not installed (npm install)')
+  if (!o.llama) steps.push('npm run vendor:llama')
+  steps.push('Settings → Hardware → Download GGUF (about 2 GB, not stored in git)')
+  const linuxNeedsDev = platform === 'linux' && o.sandboxSuid !== true
+  if (linuxNeedsDev) {
+    steps.push('npm run dev')
+    steps.push('npm run ide stays sandboxed and will not start until chrome-sandbox is setuid')
+  } else {
+    steps.push('npm run ide')
+  }
+  return {
+    ok: blockers.length === 0,
+    command: blockers.length ? '' : linuxNeedsDev ? 'npm run dev' : 'npm run ide',
+    blockers,
+    steps
+  }
+}
+
 export function chromeSandboxPath(root) {
   const candidate = `${String(root || '').replace(/\/+$/, '')}/node_modules/electron/dist/chrome-sandbox`
   return existsSync(candidate) ? candidate : ''

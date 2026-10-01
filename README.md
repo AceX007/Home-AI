@@ -2,17 +2,24 @@
 
 Local-first Electron kernel. One machine, one kernel, optional Telegram bot you create. Not a hosted SaaS.
 
-## Operator (this repo)
+## Install and run
+
+Node.js 22 or newer. On Linux and macOS, `python3`, `make`, and a C++ compiler are required so `better-sqlite3` and `node-pty` can build.
 
 ```bash
 npm install
-bash vendor/fetch-llama-server.sh   # Linux Vulkan x64; Win/mac: see vendor/README.md
-# Drop Qwen3.5-2B-Q8_0.gguf in the repo root or download from Settings / first-run.
-npm test
-npm run ide    # renderer 5175 is the Vite dev port; leave 5173 alone
+npm run vendor:llama
+npm run doctor
 ```
 
-`npm run dev` still sets `ELECTRON_DISABLE_SANDBOX` for HMR on locked-down Linux. **Release scripts do not.**
+`npm run doctor` prints the command that opens the window:
+
+- Linux, when `chrome-sandbox` is not setuid: `npm run dev`
+- Linux with a setuid sandbox helper, and Windows or macOS: `npm run ide`
+
+The window opens without a model. In the app, open Settings → Hardware → Download GGUF (about 2 GB, saved in the profile, not in git), then Load 2B. Chat stays offline until that file and `llama-server` are both present.
+
+`npm test` does not need the model. `npm run dev` is the only script that turns the Chromium sandbox off, and only so hot reload works on locked-down Linux. `npm run ide` stays sandboxed.
 
 ## Consumer install (1.0)
 
