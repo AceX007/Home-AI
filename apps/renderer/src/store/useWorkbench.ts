@@ -804,7 +804,13 @@ export const useWorkbench = create<State>((set, get) => ({
   },
 
   save: async () => {
-    const { activePath, tabs } = get()
+    const st = get()
+    if (st.activity === 'notes' && st.notePath) {
+      await window.homeai.write(st.notePath, st.noteBody)
+      await get().refreshGrounds()
+      return
+    }
+    const { activePath, tabs } = st
     const tab = tabs.find((t) => t.path === activePath)
     if (!tab) return
     await window.homeai.write(tab.path, tab.content)
@@ -1084,7 +1090,9 @@ export const useWorkbench = create<State>((set, get) => ({
   cycleProvider: () => {
     const cur = get().provider
     const i = Math.max(0, PROVIDERS.indexOf(cur))
-    set({ provider: PROVIDERS[(i + 1) % PROVIDERS.length] })
+    const next = PROVIDERS[(i + 1) % PROVIDERS.length]
+    set({ provider: next })
+    void window.homeai.profileSet({ defaultProvider: next })
   },
 
   cycleLayoutMode: () => {

@@ -1152,4 +1152,20 @@ Seed records below are day-one coverage. Agents add `AP-YYYYMMDD-N` after hunts.
 - Regression: T-135 `packages/runtime/src/search-proof.test.mjs`
 - Source: bug pass 2026-10-01
 
+### AP-20261001-4 — A labeled click must finish in the kernel or stay disabled
+- Root cause: Archive, Delete, Checks, title search, and the composer mind updated renderer state only.
+- Bad shape: archive with no thread flag; `chat-${nid()}` without `threadCreate`; Checks calls `setActivity('qa')`.
+- Good shape: `archiveThread` / `deleteThread`; Checks sets `termPanel` only; Open Debug pane still calls `setActivity('qa')`.
+- Grep / symbols: `archiveThread`, `deleteThread`, `effortLine`, `initialQuery`
+- Regression: T-136
+- Source: workbench actions 2026-10-01
+
+### AP-20261001-5 — Notes page must export wiki paths; provider cycle must persist
+- Root cause: Notes imported `wikiNoteRel` but it was not exported, so the pane failed to load. Ctrl+/ changed `provider` only in memory.
+- Bad shape: named import with no export; `cycleProvider` calls `set` and not `profileSet`.
+- Good shape: `wikiNoteRel` returns `notes/<slug>.md` or `''`; `cycleProvider` writes `defaultProvider`; File → Save writes the open note when the activity is notes.
+- Grep / symbols: `wikiNoteRel`, `cycleProvider`, `activity === 'notes'`
+- Regression: T-136 `packages/runtime/src/search-proof.test.mjs`
+- Source: deep hunt 2026-10-01
+
 

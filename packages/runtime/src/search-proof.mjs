@@ -110,6 +110,17 @@ export function publicGrepHits(rows) {
   return out
 }
 
+export function wikiNoteRel(raw) {
+  const slug = String(raw || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/\.md$/i, '')
+  if (!slug || slug.length > 64 || slug.includes('..') || /[\\/<>]/.test(slug)) return ''
+  if (!/^[\w][\w.-]{0,62}$/.test(slug)) return ''
+  return `notes/${slug}.md`
+}
+
 export function takeHitRel(path, root) {
   const n = String(path || '')
     .replace(/\\/g, '/')
