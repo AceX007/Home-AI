@@ -14,9 +14,13 @@ import {
   ragWriteRel,
   skipSkillFile,
   takeGrepQuery,
-  takeHitRel
+  takeHitRel,
+  takeLikeContains,
+  wikiNoteRel
 } from './search-proof.mjs'
+import { matchGlob } from './glob-match.mjs'
 import { kindFromPath } from './kind-path.mjs'
+import { takeRagRemoveSpec } from '../../rag/src/remove-spec.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const repo = join(here, '..', '..', '..')
@@ -116,6 +120,41 @@ describe('search and proof jails', () => {
     assert.equal(takeHitRel('/tmp/ws/apps/a.ts', '/tmp/ws'), 'apps/a.ts')
     assert.equal(takeHitRel('../secret', '/tmp/ws'), null)
     assert.equal(ragWriteRel('plans', 'ship'), 'RAG/plans/ship.md')
+  })
+
+  it('T-135 rag delete drops one path and its chunks, not a prefix', () => {
+    const spec = takeRagRemoveSpec('notes/a_b.md')
+    assert.ok(spec)
+    assert.equal(spec.path, 'notes/a_b.md')
+    assert.equal(spec.like, 'notes/a\\_b.md#chunk:%')
+    assert.equal(takeRagRemoveSpec('../secrets'), null)
+    assert.equal(takeRagRemoveSpec(''), null)
+    const rag = readFileSync(join(repo, 'packages/rag/src/index.ts'), 'utf8')
+    assert.match(rag, /takeRagRemoveSpec/)
+    assert.equal(rag.includes('${filePath}%'), false)
+    assert.equal(takeLikeContains('100%_done'), '%100\\%\\_done%')
+    assert.equal(takeLikeContains(''), null)
+    assert.equal(matchGlob('notes/a.md', '*.md'), false)
+    assert.equal(matchGlob('a.md', '*.md'), true)
+    assert.equal(matchGlob('a.md.bak', '*.md'), false)
+    assert.equal(matchGlob('apps/a.ts', '**/*.ts'), true)
+    assert.equal(matchGlob('apps/b/c.ts', 'apps/**/*.ts'), true)
+    assert.equal(matchGlob('apps/a.ts.bak', '**/*.ts'), false)
+    const rules = readFileSync(join(repo, 'packages/runtime/src/context.ts'), 'utf8')
+    assert.match(rules, /matchGlob/)
+    assert.equal(rules.includes('new RegExp(re).test(path)'), false)
+    assert.equal(wikiNoteRel('other note'), 'notes/other-note.md')
+    assert.equal(wikiNoteRel('../x'), '')
+    const chat = readFileSync(join(repo, 'apps/renderer/src/panes/ChatPane.tsx'), 'utf8')
+    assert.match(chat, /effortLine\(effort\)/)
+    assert.match(chat, /profileSet\(\{ defaultProvider: mind \}\)/)
+    const term = readFileSync(join(repo, 'apps/renderer/src/panes/TerminalPane.tsx'), 'utf8')
+    assert.equal(/Checks[\s\S]{0,500}setActivity\('qa'/.test(term), false)
+    assert.match(term, /Open Debug pane[\s\S]{0,200}setActivity\('qa'\)/)
+    const store = readFileSync(join(repo, 'apps/renderer/src/store/useWorkbench.ts'), 'utf8')
+    assert.match(store, /threadDelete/)
+    assert.match(store, /threadArchive/)
+    assert.equal(store.includes('chat-${nid()}'), false)
   })
 })
 

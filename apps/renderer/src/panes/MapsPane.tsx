@@ -20,8 +20,10 @@ export default function MapsPane({ compact, listOnly }: { compact?: boolean; lis
   const w = useWorkbench()
   const map = w.map
   const [peek, setPeek] = useState<{ path: string; content: string } | null>(null)
+  const [selected, setSelected] = useState('')
 
   const openNode = async (n: MapNode) => {
+    setSelected(n.id)
     const p = nodePath(n)
     if (!p) return
     try {
@@ -78,7 +80,7 @@ export default function MapsPane({ compact, listOnly }: { compact?: boolean; lis
           <button
             key={n.id}
             type="button"
-            className={`map-node ${nodePath(n) ? 'has-file' : ''}`}
+            className={`map-node ${nodePath(n) ? 'has-file' : ''} ${selected === n.id ? 'on' : ''}`}
             style={{ left: pos(i).x, top: pos(i).y }}
             title={n.payload}
             onClick={() => void openNode(n)}

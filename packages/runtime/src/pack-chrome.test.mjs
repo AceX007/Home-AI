@@ -29,6 +29,7 @@ import {
   takeUpdateProvider,
   takeChromeSandboxSkip,
   takeInstallPlan,
+  takeWatchHint,
   chromeSandboxSuid,
   assertGgufSize
 } from './pack-chrome.mjs'
@@ -172,5 +173,8 @@ describe('pack chrome jail — T-107', () => {
     assert.match(readme, /npm run dev/)
     assert.equal(pkg.engines.node, '>=22')
     assert.equal(String(pkg.scripts.ide).includes('ELECTRON_DISABLE_SANDBOX'), false)
+    assert.match(takeWatchHint('EMFILE'), /npm run dev cannot start/)
+    assert.equal(takeWatchHint(''), '')
+    assert.equal(doctor.includes('readdirSync'), false)
   })
 })

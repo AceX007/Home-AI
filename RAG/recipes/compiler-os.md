@@ -36,3 +36,5 @@ status: tried
 - 2026-09-05 — Wave A continue. Worked: Mini App `surface: miniapp`; fleet receipts in `takeWorkflow` + Background. Failed: codebase-memory dist still missing. Next: merge live MCP graph hits when `dist/index.js` exists.
 - 2026-09-05 — Wave A host. Worked: session+fleet sections, `join(root, name, bug-memory)` walk, fleet receipts on kernel jobs. Failed: no Electron click-walk. Next: graph MCP live when dist exists.
 - 2026-09-05 — Wave A. Worked: pack + promote + Trust chip + design think + kernel Stop. Failed: no Electron click-walk. Next: graph MCP live when dist exists.
+- 2026-10-01 — RAG unlink. Worked: `takeRagRemoveSpec` deletes one path and `#chunk:` rows. Failed if the old `LIKE path%` stayed. Next: doctor probes one watch instead of every fd. AP-20261001-2.
+- 2026-10-01 — Globs and search LIKE. Worked: `matchGlob` is anchored; `takeLikeContains` escapes `%` and `_`. Failed if `*.md` still matched `file.md.bak`. AP-20261001-3.

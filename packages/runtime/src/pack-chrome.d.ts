@@ -48,6 +48,7 @@ export function takeChromeSandboxSkip(
   env?: { ELECTRON_DISABLE_SANDBOX?: string }
 ): string
 export function chromeSandboxPath(root: unknown): string
+export function takeWatchHint(code?: unknown): string
 export function takeInstallPlan(raw?: {
   nodeMajor?: number
   platform?: string

@@ -57,6 +57,7 @@ export function sessionTitle(raw: unknown): string
 export function chatLink(id: unknown): string
 export function projectTag(ws: unknown): string
 export function takeEffort(n: unknown): number
+export function effortLine(n: unknown): string
 export function filterTranscript(groups: ActivityGroup[], view: unknown): ActivityGroup[]
 export function splitHuntVerify(rows: unknown): {
   hunt: Array<{ id: string; name: string; status: string; started: number; ended: number; tokens: string }>

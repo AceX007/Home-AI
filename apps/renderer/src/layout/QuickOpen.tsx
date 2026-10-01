@@ -13,9 +13,9 @@ function fileRows(raw: unknown): string[] {
   return out
 }
 
-export default function QuickOpen() {
+export default function QuickOpen({ initialQuery = '' }: { initialQuery?: string }) {
   const w = useWorkbench()
-  const [q, setQ] = useState('')
+  const [q, setQ] = useState(() => stripActivityText(initialQuery, 80))
   const [hits, setHits] = useState<string[]>([])
   const [i, setI] = useState(0)
 

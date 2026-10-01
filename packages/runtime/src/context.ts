@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ContextRing, RuleCard, SkillCard } from '@homeai/core'
+import { matchGlob } from './glob-match.mjs'
 
 const CHARS_PER_TOKEN = 4
 
@@ -170,16 +171,6 @@ export function selectRules(rules: RuleCard[], openFiles: string[], task: string
     out.push(r)
   }
   return out.slice(0, 10)
-}
-
-function matchGlob(path: string, glob: string): boolean {
-  const g = glob.replace(/\\/g, '/').replace(/^\.\//, '')
-  const re = g
-    .replace(/[.+^${}()|[\]\\]/g, '\\$&')
-    .replace(/\*\*/g, '::DS::')
-    .replace(/\*/g, '[^/]*')
-    .replace(/::DS::/g, '.*')
-  return new RegExp(re).test(path) || path.endsWith(g.replace(/^\*\*\//, ''))
 }
 
 export function pickSkill(skills: SkillCard[], name: string): SkillCard | undefined {

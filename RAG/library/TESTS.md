@@ -137,4 +137,5 @@ Required tests for this repo. Status: `required` (must write) | `done` (file exi
 | T-131 | Workspace symbols cancel a stale generation and run in `worker_threads`; worker has no renderer root | ts-intel | done | `packages/ts-intel/src/index.test.mjs` |
 | T-132 | Smoke skips non-SUID chrome-sandbox; does not set ELECTRON_DISABLE_SANDBOX on ide | consumer-pack | done | `packages/runtime/src/pack-chrome.test.mjs` |
 | T-133 | Workbench rows/lists/tabs/composer scroll instead of clipping; page/list/Browser hide duplicate pane-tab | workbench-chrome | done | `packages/runtime/src/hex-chrome.test.mjs` |
-| T-134 | Fresh clone: Node 22, Linux without setuid sandbox uses `npm run dev`, `ide` stays sandboxed | consumer-pack | done | `packages/runtime/src/pack-chrome.test.mjs` |
+| T-134 | Fresh clone: Node 22, Linux without setuid sandbox uses `npm run dev`, `ide` stays sandboxed; doctor does not scan every fd | consumer-pack | done | `packages/runtime/src/pack-chrome.test.mjs` |
+| T-135 | RAG delete removes one path and its `#chunk:` rows, not a prefix or `..`; globs and LIKE needles are literal | rag-fts | done | `packages/runtime/src/search-proof.test.mjs` |

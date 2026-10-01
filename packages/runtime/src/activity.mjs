@@ -357,6 +357,10 @@ export function takeEffort(n) {
   return Math.min(5, Math.max(0, i))
 }
 
+export function effortLine(n) {
+  return `Effort: ${EFFORT_LABELS[takeEffort(n)]}.`
+}
+
 export function filterTranscript(groups, view) {
   const list = Array.isArray(groups) ? groups : []
   const v = String(view || 'normal')

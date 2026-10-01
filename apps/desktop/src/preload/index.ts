@@ -150,6 +150,8 @@ export interface HomeAiApi {
   threadCreate: (title: string) => Promise<unknown>
   threadSelect: (id: string) => Promise<string>
   threadRename: (id: string, title: string) => Promise<unknown>
+  threadArchive: (id: string) => Promise<unknown>
+  threadDelete: (id: string) => Promise<unknown>
   knowledgeList: () => Promise<unknown>
   knowledgeWriteSkill: (args: { name: string; description?: string; body: string }) => Promise<unknown>
   knowledgeWriteRule: (args: { name: string; body: string }) => Promise<unknown>
@@ -321,6 +323,8 @@ const api: HomeAiApi = {
   threadCreate: (title) => ipcRenderer.invoke('homeai:thread:create', title),
   threadSelect: (id) => ipcRenderer.invoke('homeai:thread:select', id),
   threadRename: (id, title) => ipcRenderer.invoke('homeai:thread:rename', id, title),
+  threadArchive: (id) => ipcRenderer.invoke('homeai:thread:archive', id),
+  threadDelete: (id) => ipcRenderer.invoke('homeai:thread:delete', id),
   knowledgeList: () => ipcRenderer.invoke('homeai:knowledge:list'),
   knowledgeWriteSkill: (args) => ipcRenderer.invoke('homeai:knowledge:writeSkill', args),
   knowledgeWriteRule: (args) => ipcRenderer.invoke('homeai:knowledge:writeRule', args),

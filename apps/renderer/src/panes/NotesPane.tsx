@@ -1,11 +1,24 @@
 import { useState } from 'react'
 import Editor from '@monaco-editor/react'
+import { wikiNoteRel } from '@homeai/runtime/browser'
 import { HxEmpty, HxSideHead } from '../layout/HxPage'
 import { useWorkbench } from '../store/useWorkbench'
+
+function wikiNames(body: string): string[] {
+  const out: string[] = []
+  const re = /\[\[([^\]\n]{1,64})\]\]/g
+  let m: RegExpExecArray | null
+  while ((m = re.exec(body))) {
+    const rel = wikiNoteRel(m[1])
+    if (rel && !out.includes(rel)) out.push(rel)
+  }
+  return out
+}
 
 export default function NotesPane({ listOnly }: { listOnly?: boolean }) {
   const w = useWorkbench()
   const [title, setTitle] = useState('new-note')
+  const [wikiMiss, setWikiMiss] = useState('')
 
   const open = async (path: string) => {
     const body = await window.homeai.read(path)
@@ -78,6 +91,25 @@ export default function NotesPane({ listOnly }: { listOnly?: boolean }) {
           </button>
         }
       />
+      {wikiNames(w.noteBody).length ? (
+        <div className="mention-chips">
+          {wikiNames(w.noteBody).map((rel) => (
+            <button
+              key={rel}
+              type="button"
+              className="chip"
+              onClick={() => {
+                const root = w.boot?.workspace
+                if (!root) return
+                setWikiMiss('')
+                void open(`${root}/${rel}`).catch(() => setWikiMiss(rel))
+              }}
+            >
+              {rel.split('/').pop()}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div style={{ flex: 1, minHeight: 0 }}>
         {w.notePath ? (
           <Editor

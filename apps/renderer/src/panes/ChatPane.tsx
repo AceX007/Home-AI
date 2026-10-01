@@ -21,6 +21,8 @@ import {
   thinkPick,
   EFFORT_LABELS,
   takeEffort,
+  effortLine,
+  takeMind,
   workflowForgeStep,
   toolCallName
 } from '@homeai/runtime/browser'
@@ -597,9 +599,17 @@ export default function ChatPane() {
     }
     setText('')
     useWorkbench.setState({ modeMenu: false })
-    if (w.busy && forceSteer) w.steer(t)
-    else if (w.busy) w.enqueue(t)
-    else w.run(stick && t.startsWith('/') ? t.replace(/^\/([A-Za-z0-9_-]+)/, '/$1!') : t)
+    const spoken = t.startsWith('/') ? t : `${t}\n${effortLine(effort)}`
+    if (w.busy && forceSteer) w.steer(spoken)
+    else if (w.busy) w.enqueue(spoken)
+    else w.run(stick && spoken.startsWith('/') ? spoken.replace(/^\/([A-Za-z0-9_-]+)/, '/$1!') : spoken)
+  }
+
+  const setMind = (raw: string) => {
+    const mind = takeMind(raw)
+    if (!mind) return
+    void window.homeai.profileSet({ defaultProvider: mind })
+    useWorkbench.setState({ provider: mind })
   }
 
   const onChange = async (v: string) => {
@@ -1028,7 +1038,7 @@ export default function ChatPane() {
               <button
                 type="button"
                 className={w.provider === 'local' || w.agentMode === 'think' ? 'on' : ''}
-                onClick={() => useWorkbench.setState({ provider: 'local' })}
+                onClick={() => setMind('local')}
               >
                 {w.agentMode === 'think' ? 'Think · local 2B' : 'Local 2B'}
               </button>
@@ -1037,9 +1047,7 @@ export default function ChatPane() {
                 className={w.provider !== 'local' && w.agentMode !== 'think' ? 'on' : ''}
                 disabled={w.agentMode === 'think'}
                 title={w.agentMode === 'think' ? 'Think always runs local. Implement uses cloud if a key exists.' : 'Cloud'}
-                onClick={() =>
-                  useWorkbench.setState({ provider: w.provider === 'local' ? 'openrouter' : w.provider })
-                }
+                onClick={() => setMind(w.provider === 'local' ? 'openrouter' : w.provider)}
               >
                 Cloud
               </button>
@@ -1574,6 +1582,7 @@ export default function ChatPane() {
               onClick={() => {
                 const at = text.lastIndexOf('@')
                 setText(`${text.slice(0, at)}@${m} `)
+                if (m.toLowerCase() === 'browser') w.setActivity('browser')
                 setMentions([])
                 inputRef.current?.focus()
               }}
@@ -1689,7 +1698,7 @@ export default function ChatPane() {
               className="follow-select"
               value={w.provider}
               title="Mind"
-              onChange={(e) => useWorkbench.setState({ provider: e.target.value as ProviderId })}
+              onChange={(e) => setMind(e.target.value)}
             >
               {MODEL_ROWS.map((m) => (
                 <option key={m.id} value={m.id}>

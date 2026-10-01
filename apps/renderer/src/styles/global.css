@@ -2875,7 +2875,7 @@ button, input, textarea, select { font-family: inherit; color: inherit; }
   cursor: default;
 }
 .map-node.has-file { cursor: pointer; }
-.map-node.has-file:hover { border-color: var(--amber); }
+.map-node.has-file:hover, .map-node.on { border-color: var(--amber); }
 .map-kind { color: var(--amber); font-size: 10px; letter-spacing: 0.12em; }
 .map-code-card {
   position: absolute;

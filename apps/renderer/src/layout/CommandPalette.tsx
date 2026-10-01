@@ -22,8 +22,8 @@ export default function CommandPalette({ onTick }: { onTick: () => void }) {
       { id: 'think', section: 'Agents', kbd: '', label: w.thinkHint === 'ready' ? 'Think ready — Implement' : w.thinkHint ? `Think · ${w.thinkHint}` : 'Think mode — local 2B researches, then Implement', run: () => useWorkbench.setState({ agentMode: 'think', chatOpen: true }) },
       { id: 'halt', section: 'Agents', kbd: 'Ctrl+Shift+Q', label: 'Halt running job', run: () => w.stop() },
       { id: 'stage', section: 'Agents', kbd: '', label: 'Open Stage', run: () => useWorkbench.setState({ layoutMode: 'stage', chatOpen: true }) },
-      { id: 'skills', section: 'Agents', kbd: '', label: 'Skills', run: () => w.setActivity('mods') },
-      { id: 'tools', section: 'Agents', kbd: '', label: 'Tools / MCP', run: () => w.setActivity('mods') },
+      { id: 'skills', section: 'Agents', kbd: '', label: 'Skills', run: () => { useWorkbench.setState({ modsFocus: 'skills' }); w.setActivity('mods') } },
+      { id: 'tools', section: 'Agents', kbd: '', label: 'Tools / MCP', run: () => { useWorkbench.setState({ modsFocus: 'mcp' }); w.setActivity('mods') } },
       { id: 'trust', section: 'Trust', kbd: '', label: `Trust cockpit · ${pending} pending`, run: () => w.setActivity('settings') },
       { id: 'review', section: 'Trust', kbd: '', label: 'Agent review (quick)', run: async () => {
           useWorkbench.setState({ chatOpen: true })

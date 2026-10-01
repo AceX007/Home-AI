@@ -69,6 +69,8 @@ import {
   appendTurn,
   chatThreadId,
   createThread,
+  archiveThread,
+  deleteThread,
   deleteRule,
   deleteSkill,
   ensureHomeThread,
@@ -1234,6 +1236,8 @@ function registerIpc(): void {
   })
   ipcMain.handle('homeai:thread:select', (_e, id: string) => saveActiveThreadId(workspace || root(), id))
   ipcMain.handle('homeai:thread:rename', (_e, id: string, title: string) => renameThread(workspace || root(), id, title))
+  ipcMain.handle('homeai:thread:archive', (_e, id: string) => archiveThread(workspace || root(), id))
+  ipcMain.handle('homeai:thread:delete', (_e, id: string) => deleteThread(workspace || root(), id))
   ipcMain.handle('homeai:knowledge:list', () => ({
     skills: listWritableSkills(workspace || root()),
     rules: listWritableRules(workspace || root())
@@ -1688,7 +1692,7 @@ async function startKernelJob(payload: {
           browser: implementPath ? '' : lastBrowserText()
         })
         const forgeChatLog = [formatChatLog(getThread(r, threadId)), payload.chatLog].filter(Boolean).join('\n')
-        if (needsPerceivePack(mode)) {
+        if (needsPerceivePack(mode) || /(?:^|\s)@codebase\b/i.test(task)) {
           let fleetLine = ''
           try {
             if (fleetHost) fleetLine = fleetReceiptLine(fleetHost.snapshot())

@@ -18,7 +18,9 @@ import {
   telegramChatId,
   isTelegramGroupChat,
   threadForTelegram,
-  renameThread
+  renameThread,
+  archiveThread,
+  deleteThread
 } from './conversations.mjs'
 
 function tmp() {
@@ -90,6 +92,25 @@ describe('conversation store', () => {
     try {
       assert.throws(() => appendTurn(root, 'chat_missing', { role: 'user', text: 'x' }), /missing thread/)
       assert.throws(() => appendTurn(root, '../x', { role: 'user', text: 'x' }), /missing thread|bad thread/)
+    } finally {
+      rmSync(root, { recursive: true, force: true })
+    }
+  })
+
+  it('archive hides a thread and delete refuses Home and traversal', () => {
+    const root = tmp()
+    try {
+      const extra = createThread(root, 'Ship')
+      appendTurn(root, extra.id, { role: 'user', text: 'keep me' })
+      archiveThread(root, extra.id)
+      assert.equal(listThreads(root).some((row) => row.id === extra.id), false)
+      assert.equal(getThread(root, extra.id)?.archived, true)
+      assert.equal(getThread(root, extra.id)?.turns.length, 1)
+      assert.throws(() => deleteThread(root, HOME_THREAD_ID), /refused/)
+      assert.throws(() => deleteThread(root, '../secret'), /refused|bad thread/)
+      assert.equal(deleteThread(root, extra.id).ok, true)
+      assert.equal(getThread(root, extra.id), null)
+      assert.equal(getThread(root, HOME_THREAD_ID)?.id, HOME_THREAD_ID)
     } finally {
       rmSync(root, { recursive: true, force: true })
     }

@@ -1136,4 +1136,20 @@ Seed records below are day-one coverage. Agents add `AP-YYYYMMDD-N` after hunts.
 - Regression: T-134 `packages/runtime/src/pack-chrome.test.mjs`
 - Source: install path 2026-10-01
 
+### AP-20261001-2 — RAG unlink must not prefix-delete, and doctor must not walk every fd
+- Root cause: `removePath` used `LIKE path%`, so deleting `notes/a.md` also deleted `notes/a.md2` and any `_`/`%` lookalike. `npm run doctor` counted inotify by reading every process fd and stalled.
+- Bad shape: `DELETE ... path LIKE filePath%`; `readdirSync('/proc')` over every fd.
+- Good shape: `takeRagRemoveSpec` deletes that path and `path#chunk:` only, and refuses `..`. Doctor probes one `fs.watch` and maps `EMFILE` through `takeWatchHint`.
+- Grep / symbols: `takeRagRemoveSpec`, `takeWatchHint`, `removePath`
+- Regression: T-134 T-135
+- Source: bug pass 2026-10-01
+
+### AP-20261001-3 — Globs and LIKE needles must match the whole token
+- Root cause: rule globs compiled to an unanchored regex, so `*.md` matched `a.md.bak`. The FTS fallback wrapped the raw query in `%` so `%` and `_` in the query were wildcards.
+- Bad shape: `new RegExp(re).test(path)` without `^$`; `` `%${q}%` `` in SQL LIKE.
+- Good shape: `matchGlob` anchors the pattern and keeps `*` inside one path segment. `takeLikeContains` escapes `\`, `%`, and `_`.
+- Grep / symbols: `matchGlob`, `takeLikeContains`, `selectRules`
+- Regression: T-135 `packages/runtime/src/search-proof.test.mjs`
+- Source: bug pass 2026-10-01
+
 

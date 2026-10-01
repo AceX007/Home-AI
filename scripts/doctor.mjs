@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /** Fresh-clone check. Prints the command that opens Hex AI. Does not disable the sandbox. */
 import { createRequire } from 'node:module'
-import { existsSync, readFileSync, readdirSync, readlinkSync } from 'node:fs'
+import { existsSync, watch } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
   chromeSandboxPath,
   chromeSandboxSuid,
   takeInstallPlan,
-  takeLlamaAsset
+  takeLlamaAsset,
+  takeWatchHint
 } from '../packages/runtime/src/pack-chrome.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -43,34 +44,14 @@ if (plan.blockers.length) {
   console.error('On Linux/macOS install build tools (python3, make, g++) then run npm install again.')
   process.exit(1)
 }
-let watches = ''
-if (process.platform === 'linux') {
-  try {
-    const max = Number(readFileSync('/proc/sys/fs/inotify/max_user_instances', 'utf8'))
-    let used = 0
-    for (const pid of readdirSync('/proc')) {
-      if (!/^\d+$/.test(pid)) continue
-      let fds = []
-      try {
-        fds = readdirSync(`/proc/${pid}/fd`)
-      } catch {
-        continue
-      }
-      for (const fd of fds) {
-        try {
-          if (readlinkSync(`/proc/${pid}/fd/${fd}`) === 'anon_inode:inotify') used += 1
-        } catch {
-          /* fd vanished */
-        }
-      }
-    }
-    if (Number.isFinite(max) && used >= max) {
-      watches = `file watches are full (${used}/${max}). Close other apps, then run the command again.`
-    }
-  } catch {
-    /* not a Linux procfs */
-  }
+let watchCode = ''
+try {
+  const probe = watch(root, { persistent: false }, () => {})
+  probe.close()
+} catch (err) {
+  watchCode = err && typeof err === 'object' && 'code' in err ? String(err.code) : ''
 }
+const watches = takeWatchHint(watchCode)
 console.log(`open with: ${plan.command}`)
 if (watches) console.log(`wait: ${watches}`)
 for (const step of plan.steps) {

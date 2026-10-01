@@ -94,6 +94,7 @@ export default function WorkbenchShell() {
   const w = useWorkbench()
   const [tick, setTick] = useState(0)
   const [q, setQ] = useState('')
+  const [quickSeed, setQuickSeed] = useState('')
   const [menu, setMenu] = useState<string | null>(null)
   const [about, setAbout] = useState(false)
   const [diag, setDiag] = useState('')
@@ -173,8 +174,8 @@ export default function WorkbenchShell() {
           useWorkbench.setState({ chatOpen: true })
         }
       },
-      { label: 'Skills', run: () => useWorkbench.getState().setActivity('mods') },
-      { label: 'Tools / MCP', run: () => useWorkbench.getState().setActivity('mods') }
+      { label: 'Skills', run: () => { useWorkbench.setState({ modsFocus: 'skills' }); useWorkbench.getState().setActivity('mods') } },
+      { label: 'Tools / MCP', run: () => { useWorkbench.setState({ modsFocus: 'mcp' }); useWorkbench.getState().setActivity('mods') } }
     ],
     Run: [
       {
@@ -446,9 +447,17 @@ export default function WorkbenchShell() {
             value={q}
             placeholder="Hex AI"
             onChange={(e) => setQ(e.target.value)}
-            onFocus={() => useWorkbench.setState({ quickOpen: true })}
+            onFocus={() => {
+              setQuickSeed(q)
+              setQ('')
+              useWorkbench.setState({ quickOpen: true })
+            }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') useWorkbench.setState({ quickOpen: true })
+              if (e.key === 'Enter') {
+                setQuickSeed(q)
+                setQ('')
+                useWorkbench.setState({ quickOpen: true })
+              }
             }}
           />
         </div>
@@ -770,7 +779,7 @@ export default function WorkbenchShell() {
       </footer>
 
       {w.palette && <CommandPalette onTick={() => setTick((n) => n + 1)} />}
-      {w.quickOpen && <QuickOpen />}
+      {w.quickOpen && <QuickOpen initialQuery={quickSeed} />}
       {w.outlineOpen && <GotoSymbol />}
     </div>
   )

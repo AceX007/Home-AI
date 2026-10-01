@@ -34,6 +34,11 @@ export default function ModsPane({ listOnly }: { listOnly?: boolean }) {
     void refresh()
   }, [w.boot?.root])
 
+  useEffect(() => {
+    if (w.modsFocus !== 'mcp') return
+    document.getElementById('mods-mcp')?.scrollIntoView({ block: 'start' })
+  }, [w.modsFocus, w.activity])
+
   if (listOnly) {
     return (
       <>
@@ -129,7 +134,7 @@ export default function ModsPane({ listOnly }: { listOnly?: boolean }) {
         </button>
       </div>
       {note ? <p className="hx-mono">{note}</p> : null}
-      <h3>
+      <h3 id="mods-mcp">
         MCP servers ({mcp.length}){' '}
         <button
           type="button"

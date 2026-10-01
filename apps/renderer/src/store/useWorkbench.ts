@@ -124,7 +124,7 @@ export interface BootInfo {
   warning?: string
   goal?: string
   profile?: HomeProfile
-  threads?: Array<{ id: string; title: string; updatedAt: number; source?: ThreadSource }>
+  threads?: Array<{ id: string; title: string; updatedAt: number; source?: ThreadSource; archived?: boolean }>
   activeThreadId?: string
   telegram?: { configured: boolean; online: boolean; peers: number[]; pairing: { exp: number } | null }
   packaged?: boolean
@@ -185,6 +185,7 @@ interface State {
   bootError?: string
   notePath?: string
   noteBody: string
+  modsFocus: 'skills' | 'mcp'
   queue: string[]
   ring?: ContextRing
   question?: AskUserPrompt
@@ -513,6 +514,8 @@ export const useWorkbench = create<State>((set, get) => ({
   },
 
   archiveChat: (id) => {
+    if (get().busy && get().activeChat === id) return
+    void window.homeai.threadArchive(id)
     const chats = get().chats.map((c) => (c.id === id ? { ...c, archived: true } : c))
     const live = chats.filter((c) => !c.archived)
     if (!live.length) {
@@ -557,11 +560,14 @@ export const useWorkbench = create<State>((set, get) => ({
   },
 
   closeChat: (id) => {
+    if (id === 'chat_home') return
+    if (get().busy && get().activeChat === id) return
+    void window.homeai.threadDelete(id)
     const chats = get().chats.map((c) => (c.id === get().activeChat ? { ...c, log: get().log } : c))
     const next = chats.filter((c) => c.id !== id)
     if (!next.length) {
-      const nidChat = `chat-${nid()}`
-      set({ chats: [{ id: nidChat, title: 'New agent', log: [] }], activeChat: nidChat, log: [], busy: false })
+      set({ chats: [], activeChat: '', log: [], busy: false })
+      get().newChat()
       return
     }
     const activeChat = get().activeChat === id ? next[next.length - 1].id : get().activeChat
@@ -625,8 +631,10 @@ export const useWorkbench = create<State>((set, get) => ({
         telegramOnline: Boolean(boot.telegram?.online || boot.telegram?.configured)
       })
       if (boot.threads?.length) {
-        const active = boot.activeThreadId || boot.threads[0].id
-        const chats = boot.threads.map((t) => ({
+        const visible = boot.threads.filter((t) => !t.archived)
+        const active =
+          visible.some((t) => t.id === boot.activeThreadId) ? boot.activeThreadId : visible[0]?.id || boot.threads[0].id
+        const chats = visible.map((t) => ({
           id: t.id,
           title: t.title,
           log: [] as LogItem[],

@@ -6,6 +6,8 @@ import { existsSync, readdirSync, statSync } from 'node:fs'
 import { extname, join, relative } from 'node:path'
 import { kindFromPath as kindFromRel } from '../../runtime/src/kind-path.mjs'
 import { bugMemoryDirName, ragIngestAllowed } from '../../runtime/src/compiler-os.mjs'
+import { takeRagRemoveSpec } from './remove-spec.mjs'
+import { takeLikeContains } from '../../runtime/src/search-proof.mjs'
 import type { MapEdge, MapNode, QaRecord, RagHit } from '@homeai/core'
 
 const CODE_EXT = new Set([
@@ -182,7 +184,7 @@ export class RagStore {
     try {
       st = await stat(filePath)
     } catch {
-      this.removePath(filePath)
+      this.removePath(relative(workspaceRoot, filePath))
       return
     }
     if (!st.isFile() || st.size > 1_500_000) return
@@ -198,7 +200,10 @@ export class RagStore {
       | undefined
     if (existing?.hash === hash) return
 
-    this.db.prepare('DELETE FROM documents WHERE path = ? OR path LIKE ?').run(rel, `${rel}#chunk:%`)
+    const spec = takeRagRemoveSpec(rel)
+    if (spec) {
+      this.db.prepare("DELETE FROM documents WHERE path = ? OR path LIKE ? ESCAPE '\\'").run(spec.path, spec.like)
+    }
     const chunks =
       kind === 'code' || CODE_EXT.has(ext) ? chunkCode(text, rel) : [{ symbol: '', body: text.slice(0, 12_000) }]
     const insert = this.db.prepare(
@@ -217,7 +222,9 @@ export class RagStore {
   }
 
   removePath(filePath: string): void {
-    this.db.prepare('DELETE FROM documents WHERE path = ? OR path LIKE ?').run(filePath, `${filePath}%`)
+    const spec = takeRagRemoveSpec(filePath)
+    if (!spec) return
+    this.db.prepare("DELETE FROM documents WHERE path = ? OR path LIKE ? ESCAPE '\\'").run(spec.path, spec.like)
   }
 
   async ingestRoots(roots: string[], workspaceRoot: string): Promise<number> {
@@ -266,9 +273,12 @@ export class RagStore {
         score: r.score
       }))
     } catch {
-      const like = `%${q.slice(0, 80)}%`
+      const like = takeLikeContains(q)
+      if (!like) return []
       const rows = this.db
-        .prepare('SELECT path, kind, symbol, substr(text,1,240) AS snippet FROM documents WHERE text LIKE ? LIMIT ?')
+        .prepare(
+          "SELECT path, kind, symbol, substr(text,1,240) AS snippet FROM documents WHERE text LIKE ? ESCAPE '\\' LIMIT ?"
+        )
         .all(like, limit) as Array<{ path: string; kind: string; symbol: string; snippet: string }>
       return rows.map((r) => ({
         path: r.path,

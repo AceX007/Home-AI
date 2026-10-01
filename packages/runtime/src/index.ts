@@ -142,6 +142,8 @@ export {
   ensureHomeThread,
   listThreads,
   createThread,
+  archiveThread,
+  deleteThread,
   renameThread,
   appendTurn,
   bindTelegram,

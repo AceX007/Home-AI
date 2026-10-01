@@ -1,5 +1,14 @@
 import { stripActivityText } from './activity.mjs'
 
+/** Fallback LIKE needle. `%` and `_` in the query stay literal. */
+export function takeLikeContains(query) {
+  const s = String(query || '')
+    .slice(0, 80)
+    .replace(/[\\%_]/g, (ch) => `\\${ch}`)
+  if (!s.trim()) return null
+  return `%${s}%`
+}
+
 const RAG_FOLDERS = new Set([
   'code',
   'thoughts',

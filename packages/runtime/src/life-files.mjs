@@ -5,6 +5,13 @@ import { assertInside } from './paths.mjs'
 const NOTE_NAME = /^[\w][\w.-]{0,62}$/
 const CAL_NAME = /^[\w][\w.-]{0,62}$/
 
+export function wikiNoteRel(raw) {
+  const slug = String(raw || '')
+    .trim()
+    .replace(/\s+/g, '-')
+  return notesRel(slug)
+}
+
 export function notesRel(name) {
   const raw = String(name || '')
   if (raw.includes('..') || raw.includes('\0') || /[\n\r]/.test(raw)) return null

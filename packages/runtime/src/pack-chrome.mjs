@@ -248,6 +248,13 @@ export function takeChromeSandboxSkip(info, env = {}) {
   return ''
 }
 
+/** One failed watch is enough. Do not scan every process fd. */
+export function takeWatchHint(code) {
+  return String(code || '') === 'EMFILE'
+    ? 'file watches are full, so npm run dev cannot start. Close other apps and run it again.'
+    : ''
+}
+
 /** What a fresh clone should run. Never recommends disabling the sandbox on ide. */
 export function takeInstallPlan(raw = {}) {
   const o = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {}

@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { assertInside } from './paths.mjs'
 import { stripActivityText } from './activity.mjs'
@@ -82,6 +82,7 @@ function summaryOf(thread) {
   }
   const tg = telegramChatId(thread.telegramChatId)
   if (tg != null) rec.telegramChatId = tg
+  if (thread.archived === true) rec.archived = true
   return rec
 }
 
@@ -106,6 +107,7 @@ function writeThread(root, thread) {
   }
   const tg = telegramChatId(thread.telegramChatId)
   if (tg != null) rec.telegramChatId = tg
+  if (thread.archived === true) rec.archived = true
   const abs = assertInside(root, threadRel(safe))
   writeFileSync(abs, JSON.stringify(rec, null, 2), 'utf8')
   return rec
@@ -151,6 +153,7 @@ export function getThread(root, id) {
   }
   const tg = telegramChatId(raw.telegramChatId)
   if (tg != null) rec.telegramChatId = tg
+  if (raw.archived === true) rec.archived = true
   return rec
 }
 
@@ -170,7 +173,30 @@ export function ensureHomeThread(root) {
 
 export function listThreads(root) {
   ensureHomeThread(root)
-  return rebuildIndex(root)
+  return rebuildIndex(root).filter((row) => row.archived !== true)
+}
+
+export function archiveThread(root, id) {
+  const safe = chatThreadId(id)
+  if (!safe) throw new Error('bad thread id')
+  const thread = getThread(root, safe)
+  if (!thread) throw new Error('missing thread')
+  thread.archived = true
+  thread.updatedAt = Date.now()
+  const next = writeThread(root, thread)
+  rebuildIndex(root)
+  return next
+}
+
+export function deleteThread(root, id) {
+  const safe = chatThreadId(id)
+  if (!safe || safe === HOME_THREAD_ID) throw new Error('refused')
+  const abs = assertInside(root, threadRel(safe))
+  if (existsSync(abs)) unlinkSync(abs)
+  rebuildIndex(root)
+  const active = loadActiveThreadId(root)
+  if (active === safe) saveActiveThreadId(root, HOME_THREAD_ID)
+  return { ok: true, id: safe }
 }
 
 export function createThread(root, title, source = 'desktop') {

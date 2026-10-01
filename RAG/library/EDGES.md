@@ -144,3 +144,5 @@ Edge-to-edge cases. Status: `tracked` | `tested` (has a prevent artifact / test)
 | E-138 | File TS IPC blocks Electron main, or smoke fails hard on non-SUID chrome-sandbox | ts-intel | tested |
 | E-139 | Bottom tabs, status, sidebar lists, or composer clip; page grid auto-places HxPage into a 0px track | workbench-chrome | tested |
 | E-140 | Fresh Linux clone is told to run sandboxed `ide` when chrome-sandbox is not setuid | consumer-pack | tested |
+| E-141 | Deleting one indexed file removes every document whose path shares that prefix | rag-fts | tested |
+| E-142 | A rule glob `*.md` also matches `file.md.bak`, or a search `%` matches every row | rag-fts | tested |

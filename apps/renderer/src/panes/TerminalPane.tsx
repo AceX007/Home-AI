@@ -150,8 +150,8 @@ export default function TerminalPane() {
           role="tab"
           aria-selected={panel === 'problems'}
           tabIndex={0}
-          onClick={() => useWorkbench.getState().setActivity('qa', { termPanel: 'problems', termOpen: true })}
-          onKeyDown={(e) => activateByKey(e, () => useWorkbench.getState().setActivity('qa', { termPanel: 'problems', termOpen: true }))}
+          onClick={() => useWorkbench.setState({ termPanel: 'problems', termOpen: true })}
+          onKeyDown={(e) => activateByKey(e, () => useWorkbench.setState({ termPanel: 'problems', termOpen: true }))}
         >
           Checks{problems.length + qaChecks.length ? ` (${problems.length + qaChecks.length})` : ''}
         </button>
@@ -170,8 +170,8 @@ export default function TerminalPane() {
           className={`term-tab ${panel === 'debug' ? 'on' : ''}`}
           role="tab"
           aria-selected={panel === 'debug'}
-          onClick={() => useWorkbench.getState().setActivity('qa', { termOpen: true, termPanel: 'debug' })}
-          onKeyDown={(e) => activateByKey(e, () => useWorkbench.getState().setActivity('qa', { termOpen: true, termPanel: 'debug' }))}
+          onClick={() => useWorkbench.setState({ termOpen: true, termPanel: 'debug' })}
+          onKeyDown={(e) => activateByKey(e, () => useWorkbench.setState({ termOpen: true, termPanel: 'debug' }))}
         >
           Workflow
         </button>
